@@ -98,6 +98,22 @@ public sealed class PlayerBehaviour : SlingEntity
     public bool IsComboRushActive => _comboRushTimer > 0f;
     private bool _isComboRushIntro; // 러쉬 발동 연출(줌인/이펙트/정지) 중 — 조준 차단
 
+    private Vector2 _lastFixedVelocity; // 충돌 해소로 깎이기 전(FixedTick 끝) 속도 — 러쉬 파괴 판정에 사용
+
+    // 러쉬 중 파괴 조건: 위로 상승 중이거나 옆으로 빠르게 이동 중일 때만 (천천히 떨어지거나 앉아있으면 파괴 안 함)
+    // 충돌 콜백 시점의 Rigid.linearVelocity는 이미 충돌로 깎여 있을 수 있어, 충돌 직전 속도와 현재 속도 중 더 빠른 쪽으로 판정한다.
+    private bool IsRushSmashing
+    {
+        get
+        {
+            var config = SlingBehaviour.Config;
+            return IsSmashSpeed(_lastFixedVelocity, config) || IsSmashSpeed(Rigid.linearVelocity, config);
+        }
+    }
+
+    private static bool IsSmashSpeed(Vector2 vel, SlingConfig config)
+        => vel.y > config.comboRushSmashUpSpeed || Mathf.Abs(vel.x) > config.comboRushSmashSideSpeed;
+
     public bool IsInputEnabled { get; set; } = true;
 
     public bool CanAim => !IsStunned
@@ -207,6 +223,9 @@ public sealed class PlayerBehaviour : SlingEntity
             ApplyGravity(fixedDeltaTime);
 
         _fsm?.FixedUpdate(fixedDeltaTime);
+
+        // 물리 시뮬레이션(충돌 해소) 직전 속도를 저장 — 충돌 콜백에서 깎이기 전 값으로 러쉬 파괴 판정
+        _lastFixedVelocity = Rigid.linearVelocity;
     }
 
     public override void Tick(float deltaTime)
@@ -236,7 +255,7 @@ public sealed class PlayerBehaviour : SlingEntity
             // 발동 연출(줌인/프리즈/이펙트) 중에는 시간을 깎지 않고, 연출이 끝난 뒤부터 카운트다운한다
             if (!_isComboRushIntro) _comboRushTimer = Mathf.Max(0f, _comboRushTimer - Time.unscaledDeltaTime);
             if (_comboRushTimer > 0f) _onComboRushChanged?.Invoke(_comboRushTimer, ComboRushDuration); // 러쉬 중 게이지를 남은 시간 카운트다운으로 갱신
-            else { _onComboRushChanged?.Invoke(0f, ComboRushDuration); _combo.Reset(); } // 러쉬 종료(양수→0) 프레임에 콤보 리셋 → 일반 게이지가 빈 상태로 복귀
+            else { _onComboRushChanged?.Invoke(0f, ComboRushDuration); _combo.Reset(); _playerDisplay.RefreshDisplay(); } // 러쉬 종료(양수→0) 프레임에 콤보 리셋 → 일반 게이지가 빈 상태로 복귀 + 차지 오브 다시 표시
         }
 
         // 추진 상태의 진입/이탈 엣지 (grace 포함, IsPropelled 정의를 그대로 사용)
@@ -427,7 +446,8 @@ public sealed class PlayerBehaviour : SlingEntity
         _aimStartedGrounded = _platformerSensor.IsGrounded && !IsComboRushActive;
         SoundManager.Instance.PlaySfx(SfxType.AimDrag);
 
-        if (!_aimSlowStartedThisPress)
+        // 콤보 러쉬 중에는 에임 슬로우를 걸지 않는다 (러쉬는 풀스피드 유지)
+        if (!_aimSlowStartedThisPress && !IsComboRushActive)
         {
             _aimSlowStartedThisPress = true;
             if (_aimSlowCoroutine != null) StopCoroutine(_aimSlowCoroutine);
@@ -484,7 +504,7 @@ public sealed class PlayerBehaviour : SlingEntity
             return;
         }
 
-        SlingBehaviour.ShowTrajectory(_lastDragOffset, _aimStartedGrounded);
+        SlingBehaviour.ShowTrajectory(_lastDragOffset, _aimStartedGrounded, IsComboRushActive);
     }
 
     private void EndAim()
@@ -598,6 +618,7 @@ public sealed class PlayerBehaviour : SlingEntity
         // CameraController.ResetZoom(_comboRushZoomOutDuration);
         CameraController.StopConstantShake();
         yield return new WaitForSecondsRealtime(_comboRushPostEffectDelay);
+        _playerDisplay.RefreshDisplay(); // 러쉬 진입 — 차지 오브 숨김
         Time.timeScale = _isAimSlowing ? _effectiveAimScale : 1f;
         _isComboRushIntro = false;
     }
@@ -720,12 +741,20 @@ public sealed class PlayerBehaviour : SlingEntity
         // 부위 구분이 없는 일반 적
         if (collider.TryGetComponent<EnemyBehaviour>(out var enemy) && !enemy.IsDead)
         {
-            if (IsPropelled || IsComboRushActive) OnPropelledHit(enemy);
+            // 러쉬 중에는 충분히 빠를 때만 파괴 — 느리게 떨어지거나 앉아있을 땐 그냥 통과
+            if (IsComboRushActive) { if (IsRushSmashing) OnPropelledHit(enemy); }
+            else if (IsPropelled) OnPropelledHit(enemy);
             else OnDriftingHit(enemy);
         }
         else if (collider.TryGetComponent<RushLaunchable>(out var rushLaunchable))
         {
-            if (IsComboRushActive) rushLaunchable.Launch();
+            if (IsComboRushActive && IsRushSmashing)
+            {
+                rushLaunchable.Launch();
+                var hitPos = (Vector2)(this.Visual.position + rushLaunchable.transform.position) * 0.5f;
+                EffectManager.Instance?.Play(VfxType.Attack, hitPos);
+                SoundManager.Instance.PlaySfx(SfxType.Attack, 0.8f);
+            }
         }
     }
 }

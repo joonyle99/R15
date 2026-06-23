@@ -15,6 +15,7 @@ public class SlingConfig : ScriptableObject
     [Tooltip("슬링샷 추진력 적용되는 중력 가속도 (단위/초²)")] public float slingGravity = 30f;
     [Tooltip("지상 발사 속도")] public float groundSlingSpeed = 18f;
     [Tooltip("공중 발사 속도 (지상보다 빠름)")] public float airSlingSpeed = 24f;
+    [Tooltip("콤보 러쉬 발사 속도")] public float comboRushSlingSpeed = 40f;
     [Tooltip("발사 시 부여되는 기본 추진력(예산) 지속 시간(초)")] public float slingTime = 0.3f;
     [Tooltip("벽 킥(예산 바운스) 1회당 추진력 예산에 더해지는 시간(초)")] public float bonusTime = 0.2f;
     [Tooltip("추진력 예산 소진 후에도 추진력 판정을 유지하는 유예 시간(초)")] public float propelledGraceDuration = 0.08f;
@@ -31,9 +32,11 @@ public class SlingConfig : ScriptableObject
     [Tooltip("예산 소진 후에도 벽에 닿으면 주어지는 추가 킥 횟수 (조준선엔 미표시)")] public int bonusKickCount = 1;
     [Tooltip("킥 불가 상태로 벽에 닿았을 때 밀려나는 속도 (벽 타고 떨어지는 그림 방지)")] public float wallRepelSpeed = 5f;
     [Tooltip("시작 차지 — 지상 발사도 차지를 소모하므로 기본 1개 보장")] public int baseCharges = 1;
-    [Tooltip("콤보 러쉬 모드 지속 시간(초)")] public float comboRushDuration = 10f;
-    [Tooltip("벽 킥 설정 (속도/각도)")] public KickConfig kick = new KickConfig { angle = 45f, speed = 50f };
     [Tooltip("궤적 총 거리가 이 값 미만이면 끝 화살표 숨김")] public float minArrowDistance = 1.5f;
+    [Tooltip("콤보 러쉬 모드 지속 시간(초)")] public float comboRushDuration = 10f;
     [Tooltip("콤보 러쉬 발동 임계값 (이 콤보 수 이상이면 러쉬 발동)")] public int comboRushThreshold = 15;
     [Tooltip("연속 미션 클리어 N회 시 콤보 러쉬 발동")] public int comboRushMissionChain = 3;
+    [Tooltip("콤보 러쉬 중 이 속도 이상 상승할 때만 파괴 (천천히 떨어지거나 앉아있으면 파괴 안 함)")] public float comboRushSmashUpSpeed = 0.1f;
+    [Tooltip("콤보 러쉬 중 이 속도 이상 수평 이동할 때만 파괴")] public float comboRushSmashSideSpeed = 8f;
+    [Tooltip("벽 킥 설정 (속도/각도)")] public KickConfig kick = new KickConfig { angle = 45f, speed = 50f };
 }

@@ -16,12 +16,15 @@ public struct SlingState
     public float Total; // 누적 이동 거리
     public int Bounces;
 
-    public static SlingState Create(Vector2 origin, Vector2 dir, SlingConfig config, bool fromGround)
+    public static SlingState Create(Vector2 origin, Vector2 dir, SlingConfig config, bool fromGround, bool comboRush = false)
     {
+        var speed = comboRush ? config.comboRushSlingSpeed
+                  : fromGround ? config.groundSlingSpeed
+                  : config.airSlingSpeed;
         return new SlingState
         {
             Position = origin,
-            Velocity = dir * (fromGround ? config.groundSlingSpeed : config.airSlingSpeed),
+            Velocity = dir * speed,
             Remaining = config.slingTime,
         };
     }

@@ -29,7 +29,7 @@ public sealed class PlayerAirState : StateBase<PlayerBehaviour>
         {
             var shotDir = owner.SlingBehaviour.LastShotDir;
             owner.SetFacingDir(shotDir.x > 0f);
-            _slingBudget = SlingState.Create(owner.Rigid.position, shotDir, _slingConfig, wasGrounded);
+            _slingBudget = SlingState.Create(owner.Rigid.position, shotDir, _slingConfig, wasGrounded, owner.IsComboRushActive);
 
             _isHitPausing = true;
 
@@ -101,6 +101,7 @@ public sealed class PlayerAirState : StateBase<PlayerBehaviour>
     public void OnCollisionEnter(PlayerBehaviour owner, Collision2D collision)
     {
         if (_isHitPausing) return;
+        if (owner.IsComboRushActive) return; // 콤보 러쉬 중에는 벽킥/바운스 없이 직진
         if ((owner.PlatformerSensor.GroundLayer.value & (1 << collision.gameObject.layer)) == 0) return;
 
         for (int i = 0; i < collision.contactCount; i++)
@@ -109,7 +110,15 @@ public sealed class PlayerAirState : StateBase<PlayerBehaviour>
 
             if (!SlingSimulator.IsWall(normal, _slingConfig)) continue;
 
-            if (SlingSimulator.CanBounce(in _slingBudget, _slingConfig))
+            if (owner.IsComboRushActive)
+            {
+                // TODO: 벽에 튕겼을때 어떠한 움직임을 주고싶은가?
+                // var vel = owner.Rigid.linearVelocity;
+                // vel.x = normal.x * _slingConfig.airSlingSpeed;
+                // owner.Rigid.linearVelocity = vel;
+                // owner.SetFacingDir(vel.x > 0f);
+            }
+            else if (SlingSimulator.CanBounce(in _slingBudget, _slingConfig))
             {
                 // 예산 킥: 조준선이 예측한 튕김 — 추진 상태 유지
                 SlingSimulator.Bounce(ref _slingBudget, normal, _slingConfig);
@@ -124,7 +133,6 @@ public sealed class PlayerAirState : StateBase<PlayerBehaviour>
             }
             else
             {
-                // 데드 바운스: 킥 불가면 벽 반대로 살짝 밀어낸다 (벽을 타고 떨어지는 그림 방지, Poinpy식)
                 var vel = owner.Rigid.linearVelocity;
                 vel.x = normal.x * _slingConfig.wallRepelSpeed;
                 owner.Rigid.linearVelocity = vel;

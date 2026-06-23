@@ -132,8 +132,16 @@ public class PlayerDisplay : MonoBehaviour
         RefreshDisplay();
     }
 
-    private void RefreshDisplay()
+    public void RefreshDisplay()
     {
+        // 콤보 러쉬 중에는 차지(점프 오브)를 소모하지 않으므로 오브를 모두 숨긴다
+        if (_isComboRushActive?.Invoke() ?? false)
+        {
+            foreach (var charge in _charges)
+                charge.gameObject.SetActive(false);
+            return;
+        }
+
         var curr = _slingBehaviour.CurrCharges;
         var isPreview = _isAimPreview && !_isAimPreviewFree && !(_isComboRushActive?.Invoke() ?? false);
         var displayCurr = isPreview ? Mathf.Max(0, curr - 1) : curr;

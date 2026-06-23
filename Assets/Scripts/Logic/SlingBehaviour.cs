@@ -99,7 +99,7 @@ public class SlingBehaviour : MonoBehaviour
 
     // ============ ... ============
 
-    public void ShowTrajectory(Vector2 dragOffset, bool fromGround)
+    public void ShowTrajectory(Vector2 dragOffset, bool fromGround, bool comboRush = false)
     {
         var slingDir = (-1) * dragOffset.normalized;
 
@@ -114,7 +114,7 @@ public class SlingBehaviour : MonoBehaviour
         //     return;
         // }
 
-        var slingResult = _solver.Solve(origin, slingDir, fromGround);
+        var slingResult = _solver.Solve(origin, slingDir, fromGround, comboRush);
 
         if (slingResult.TotalDistance < _config.minArrowDistance)
         {

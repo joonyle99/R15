@@ -27,12 +27,12 @@ public class TrajectorySolver
         _enemyLayer = enemyLayer;
     }
 
-    public SlingResult Solve(Vector2 origin, Vector2 dir, bool fromGround)
+    public SlingResult Solve(Vector2 origin, Vector2 dir, bool fromGround, bool comboRush = false)
     {
         var points = new List<Vector2> { origin };
         var bouncePoints = new List<Vector2>();
         var hitEnemySet = new HashSet<Collider2D>();
-        var simulation = SlingState.Create(origin, dir, _config, fromGround);
+        var simulation = SlingState.Create(origin, dir, _config, fromGround, comboRush);
 
         while (simulation.Remaining > 0f)
         {
