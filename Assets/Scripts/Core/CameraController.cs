@@ -34,6 +34,7 @@ public class CameraController : MonoBehaviour
     private Transform _followTarget;
     private Tween _zoomTween;
     private Tween _offsetTween;
+    private float _minY = float.NegativeInfinity; // 카메라가 이 월드 Y 아래로 내려가지 못하도록 막는 하한선 (역주행 방지)
 
     // =========== ... ===========
 
@@ -58,6 +59,7 @@ public class CameraController : MonoBehaviour
 
             var pos = transform.position;
             var targetY = _followTarget.position.y + _verticalOffset;
+            if (targetY < _minY) targetY = _minY; // 하한선 아래로는 추적하지 않음
             pos.x = _fixedX;
             float speed = targetY > pos.y ? _riseSpeed : _fallSpeed;
             pos.y = Mathf.Lerp(pos.y, targetY, deltaTime * speed);
@@ -82,6 +84,7 @@ public class CameraController : MonoBehaviour
         {
             _fixedX = transform.position.x;
             _verticalOffset = _defaultVerticalOffset;
+            _minY = float.NegativeInfinity;
         }
     }
 
@@ -158,6 +161,19 @@ public class CameraController : MonoBehaviour
         pos.x = _fixedX;
         pos.y = target.position.y + _verticalOffset;
         transform.position = pos;
+    }
+
+    // 카메라가 내려갈 수 있는 월드 Y 하한선을 설정한다 (역주행 방지).
+    // 특정 지점 통과 시 호출하면 이후 그 Y 아래로는 카메라가 이동하지 않는다.
+    public void SetMinY(float minY)
+    {
+        _minY = minY;
+    }
+
+    // 하한선을 해제하여 자유롭게 따라가도록 되돌린다.
+    public void ClearMinY()
+    {
+        _minY = float.NegativeInfinity;
     }
 
     public void SetUrgent(bool urgent)
