@@ -393,6 +393,7 @@ public sealed class PlayerBehaviour : SlingEntity
 
         // 시작 확정: 입력/물리/FSM 정지 (Tick·FixedTick early-return + 물리 비활성)
         _isStartingGame = true;
+        _playerStatusVfx.HideAll();
         if (_isAiming) EndAim();
         CancelAimSlow(); // 에임 슬로우의 timeScale<1이 버튼 연출을 느리게 하지 않도록 해제
         Rigid.linearVelocity = Vector2.zero;
@@ -434,7 +435,6 @@ public sealed class PlayerBehaviour : SlingEntity
         if (IsComboRushActive || _isComboRushIntro || IsStunned || IsDead) return;
 
         _comboRushTimer = SlingBehaviour.Config.comboRushDuration;
-        // _playerDisplay.ShowComboRushEffect();
         StartCoroutine(ComboRushIntroRoutine());
     }
 
@@ -609,6 +609,8 @@ public sealed class PlayerBehaviour : SlingEntity
         if (_isAiming) EndAim(); // 연출 진입 시 진행 중이던 조준은 취소
         CancelAimSlow(); // 에임 슬로우 코루틴이 정지 연출의 timeScale을 덮어쓰지 않도록 끊는다
         Time.timeScale = 0f;
+        _playerStatusVfx.HideAll(); // 러쉬 진입 — 추진/에너지/스턴만 초기화하고 러쉬 전용 이펙트는 유지(토글 경합 방지)
+        // _playerDisplay.ShowComboRushEffect();
         // TODO: 콤보 러쉬 SFX 넣기
         // CameraController.ZoomScale(_comboRushZoomScale, _comboRushZoomInDuration);
         yield return new WaitForSecondsRealtime(_comboRushPreEffectDelay);
@@ -716,33 +718,12 @@ public sealed class PlayerBehaviour : SlingEntity
     {
         if (IsDead) return;
 
-        // // 부위가 나뉜 적: 맞은 부위에 따라 처치/피격이 갈린다
-        // if (collider.TryGetComponent<EnemyHitbox>(out var hitbox))
-        // {
-        //     var owner = hitbox.Owner;
-        //     if (owner == null || owner.IsDead) return;
-
-        //     switch (hitbox.Part)
-        //     {
-        //         case EnemyHitPart.Weakpoint: // 속살: 추진/콤보러쉬 중일 때만 처치
-        //             if (IsPropelled || IsComboRushActive) OnPropelledHit(owner);
-        //             else OnDriftingHit(owner);
-        //             break;
-
-        //         case EnemyHitPart.Armor: // 껍질: 콤보러쉬는 관통(몬스터 날림), 평상시엔 피격
-        //             if (IsComboRushActive) OnPropelledHit(owner);
-        //             else if (IsPropelled) { /* TODO: 껍질 추진 충돌 처리(피격/튕김) 추후 결정 */ }
-        //             else OnDriftingHit(owner);
-        //             break;
-        //     }
-        //     return;
-        // }
-
-        // 부위 구분이 없는 일반 적
         if (collider.TryGetComponent<EnemyBehaviour>(out var enemy) && !enemy.IsDead)
         {
-            // 러쉬 중에는 충분히 빠를 때만 파괴 — 느리게 떨어지거나 앉아있을 땐 그냥 통과
+            // 러쉬 중에는 부위 구분 없이, 충분히 빠를 때만 파괴 — 느리게 떨어지거나 앉아있을 땐 그냥 통과
             if (IsComboRushActive) { if (IsRushSmashing) OnPropelledHit(enemy); }
+            // 콤보러쉬가 아닐 때만 부위 판정: 회전 적의 껍질(Armor)은 처치 불가 → 피격
+            else if (enemy is RotatingEnemyBehaviour rotating && rotating.GetHitPart(Visual.position) == EnemyHitPart.Armor) OnDriftingHit(enemy);
             else if (IsPropelled) OnPropelledHit(enemy);
             else OnDriftingHit(enemy);
         }
