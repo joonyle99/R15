@@ -10605,7 +10605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e116336304c54d94bae81b8f2eea74aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBehaviour
-  maxHp: 5
+  maxHp: 1
   _launchPauseDuration: 0.1
   _bouncePauseDuration: 0.2
   _enemyHitPauseDuration: 0.25
