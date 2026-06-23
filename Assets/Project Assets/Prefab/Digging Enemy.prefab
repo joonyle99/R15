@@ -121,7 +121,7 @@ MonoBehaviour:
   _emergeHeight: 10
   _idleInterval: 2
   _idleVariance: 0.1
-  _warningDuration: 1
+  _warningDuration: 0
   _emergeEase: 6
   _returnEase: 5
   _emergeLine: {fileID: 4489107637145675742}
