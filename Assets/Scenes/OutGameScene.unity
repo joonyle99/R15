@@ -1071,7 +1071,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   _roomMoveSpeed: 6
   _floorMoveSpeed: 6
-  _verticalOffset: 5
+  _defaultVerticalOffset: 2
+  _urgentVerticalOffset: 0
+  _urgentDuration: 0.4
+  _urgentEaseIn: 18
+  _urgentEaseOut: 4
   _riseSpeed: 15
   _fallSpeed: 15
 --- !u!114 &180730245
@@ -1590,6 +1594,7 @@ GameObject:
   m_Component:
   - component: {fileID: 271682772}
   - component: {fileID: 271682773}
+  - component: {fileID: 271682774}
   m_Layer: 0
   m_Name: out_background_object_cloud (4)
   m_TagString: Untagged
@@ -1670,6 +1675,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &271682774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271682771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbd679721b962a48931a6d32c4bc06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CloudScroller
+  _scrollSpeed: 0.5
+  _resetPosX: -25
+  _startPosX: 25
+  _drawGizmos: 1
+  _gizmoLineHeight: 5
 --- !u!1 &307004528
 GameObject:
   m_ObjectHideFlags: 0
@@ -2428,7 +2450,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1762890149
-  m_SortingLayer: 9
+  m_SortingLayer: 10
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 33dccf83b7f7f294992c97ebe1990464, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
@@ -2783,6 +2805,7 @@ GameObject:
   m_Component:
   - component: {fileID: 508783694}
   - component: {fileID: 508783695}
+  - component: {fileID: 508783696}
   m_Layer: 0
   m_Name: out_background_object_cloud
   m_TagString: Untagged
@@ -2863,6 +2886,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &508783696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 508783693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbd679721b962a48931a6d32c4bc06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CloudScroller
+  _scrollSpeed: 0.5
+  _resetPosX: -25
+  _startPosX: 25
+  _drawGizmos: 1
+  _gizmoLineHeight: 5
 --- !u!1 &511375036
 GameObject:
   m_ObjectHideFlags: 0
@@ -2948,6 +2988,7 @@ GameObject:
   m_Component:
   - component: {fileID: 531939335}
   - component: {fileID: 531939336}
+  - component: {fileID: 531939337}
   m_Layer: 0
   m_Name: out_background_cloud2 (4)
   m_TagString: Untagged
@@ -3028,6 +3069,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &531939337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531939334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbd679721b962a48931a6d32c4bc06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CloudScroller
+  _scrollSpeed: 0.5
+  _resetPosX: -25
+  _startPosX: 25
+  _drawGizmos: 1
+  _gizmoLineHeight: 5
 --- !u!1 &536385093
 GameObject:
   m_ObjectHideFlags: 0
@@ -4568,6 +4626,7 @@ GameObject:
   m_Component:
   - component: {fileID: 801476655}
   - component: {fileID: 801476656}
+  - component: {fileID: 801476657}
   m_Layer: 0
   m_Name: out_background_object_cloud (2)
   m_TagString: Untagged
@@ -4648,6 +4707,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &801476657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801476654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbd679721b962a48931a6d32c4bc06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CloudScroller
+  _scrollSpeed: 0.5
+  _resetPosX: -25
+  _startPosX: 25
+  _drawGizmos: 1
+  _gizmoLineHeight: 5
 --- !u!1 &806703429
 GameObject:
   m_ObjectHideFlags: 0
@@ -4926,6 +5002,7 @@ GameObject:
   m_Component:
   - component: {fileID: 914182531}
   - component: {fileID: 914182532}
+  - component: {fileID: 914182533}
   m_Layer: 0
   m_Name: out_background_cloud2
   m_TagString: Untagged
@@ -5006,6 +5083,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &914182533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914182530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbd679721b962a48931a6d32c4bc06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CloudScroller
+  _scrollSpeed: 0.5
+  _resetPosX: -25
+  _startPosX: 25
+  _drawGizmos: 1
+  _gizmoLineHeight: 5
 --- !u!1 &914230636
 GameObject:
   m_ObjectHideFlags: 0
@@ -5361,6 +5455,7 @@ GameObject:
   m_Component:
   - component: {fileID: 930018604}
   - component: {fileID: 930018605}
+  - component: {fileID: 930018606}
   m_Layer: 0
   m_Name: out_background_cloud2 (2)
   m_TagString: Untagged
@@ -5441,6 +5536,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &930018606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930018603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbd679721b962a48931a6d32c4bc06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CloudScroller
+  _scrollSpeed: 0.5
+  _resetPosX: -25
+  _startPosX: 25
+  _drawGizmos: 1
+  _gizmoLineHeight: 5
 --- !u!1 &967450502
 GameObject:
   m_ObjectHideFlags: 0
@@ -6807,6 +6919,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1161332211}
   - component: {fileID: 1161332212}
+  - component: {fileID: 1161332213}
   m_Layer: 0
   m_Name: out_background_cloud2 (3)
   m_TagString: Untagged
@@ -6887,6 +7000,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1161332213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161332210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbd679721b962a48931a6d32c4bc06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CloudScroller
+  _scrollSpeed: 0.5
+  _resetPosX: -25
+  _startPosX: 25
+  _drawGizmos: 1
+  _gizmoLineHeight: 5
 --- !u!1 &1179837057
 GameObject:
   m_ObjectHideFlags: 0
@@ -7628,6 +7758,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1347696268}
   - component: {fileID: 1347696269}
+  - component: {fileID: 1347696270}
   m_Layer: 0
   m_Name: out_background_cloud2 (1)
   m_TagString: Untagged
@@ -7708,6 +7839,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1347696270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347696267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbd679721b962a48931a6d32c4bc06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CloudScroller
+  _scrollSpeed: 0.5
+  _resetPosX: -25
+  _startPosX: 25
+  _drawGizmos: 1
+  _gizmoLineHeight: 5
 --- !u!1 &1350388616
 GameObject:
   m_ObjectHideFlags: 0
@@ -8129,6 +8277,11 @@ Transform:
   - {fileID: 2097226575}
   m_Father: {fileID: 1282416652}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+--- !u!1 &1479113144 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 174125888316507203, guid: b1628fba081b74d4d94aae03bc1921de, type: 3}
+  m_PrefabInstance: {fileID: 868618461}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1513962731
 GameObject:
   m_ObjectHideFlags: 0
@@ -8458,6 +8611,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1561101991}
   - component: {fileID: 1561101992}
+  - component: {fileID: 1561101993}
   m_Layer: 0
   m_Name: out_background_object_cloud (3)
   m_TagString: Untagged
@@ -8538,6 +8692,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1561101993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561101990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbd679721b962a48931a6d32c4bc06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CloudScroller
+  _scrollSpeed: 0.5
+  _resetPosX: -25
+  _startPosX: 25
+  _drawGizmos: 1
+  _gizmoLineHeight: 5
 --- !u!1 &1564661455
 GameObject:
   m_ObjectHideFlags: 0
@@ -10109,6 +10280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1875046225}
   - component: {fileID: 1875046226}
+  - component: {fileID: 1875046227}
   m_Layer: 0
   m_Name: out_background_object_cloud (1)
   m_TagString: Untagged
@@ -10189,6 +10361,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1875046227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875046224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbd679721b962a48931a6d32c4bc06d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CloudScroller
+  _scrollSpeed: 0.5
+  _resetPosX: -25
+  _startPosX: 25
+  _drawGizmos: 1
+  _gizmoLineHeight: 5
 --- !u!1 &1883138082
 GameObject:
   m_ObjectHideFlags: 0
@@ -10397,10 +10586,15 @@ MonoBehaviour:
     _prefab: Assets/Project Resources/Texture/effect/stun.prefab
   - _gameObject: {fileID: 868618463}
     _prefab: Assets/Project Resources/Texture/effect/dash1.prefab
+  - _gameObject: {fileID: 1479113144}
+    _prefab: "Assets/Project Resources/Texture/test/New Folder 1/\uCD94\uAC00/2/Fx_EventFirstAnniv_spd_03_2
+      (1)(\uB300\uC2DC\uC774\uD399\uD2B8).prefab"
   - _gameObject: {fileID: 868618466}
     _prefab: Assets/Project Resources/Texture/effect/dash2.prefab
   - _gameObject: {fileID: 1066757017}
     _prefab: Assets/Project Resources/Texture/effect/rush_effect.prefab
+  - _gameObject: {fileID: 868618462}
+    _prefab: Assets/Project Assets/Prefab/Player.prefab
 --- !u!4 &1926579466
 Transform:
   m_ObjectHideFlags: 11
